@@ -1,2 +1,7 @@
 # ignore packages installed by npm
 node_modules
+*~
+.DS_Store
+.idea
+yarn.lock*
+yarn-error.log*

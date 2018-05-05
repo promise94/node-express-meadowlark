@@ -1,18 +1,14 @@
-var fortunes = [
-  "Conquer your fears or they will conquer you.",
-  "Rivers need springs.",
-  "Do not fear what you don't know.",
-  "You will have a pleasant surprise.",
-  "Whenever possible, keep it simple."
-];
-
 let express = require("express");
 
 let app = express();
 
+let fortune = require("./lib/fortune");
+
 let handlebars = require("express3-handlebars").create({
   defaultLayout: "main"
 });
+
+if (app.thing == null) console.log("bleat!");
 
 app.engine("handlebars", handlebars.engine);
 app.set("view engine", "handlebars");
@@ -21,13 +17,31 @@ app.set("port", process.env.PORT || 3000);
 
 app.use(express.static(`${__dirname}/public`));
 
+// 检测是否加载测试
+app.use((req, res, next) => {
+  res.locals.showTests =
+    app.get("env") !== "production" && req.query.test === "1";
+  next();
+});
+
+// 路由
 app.get("/", (req, res) => {
   res.render("home");
 });
 
 app.get("/about", function(req, res) {
-  var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-  res.render("about", { fortune: randomFortune });
+  res.render("about", {
+    fortune: fortune.getFortune(),
+    pageTestScript: "/qa/tests_about.js"
+  });
+});
+
+app.get("/tours/hood-river", (req, res) => {
+  res.render("tours/hood_river");
+});
+
+app.get("/tours/request-group-rate", (req, res) => {
+  res.render("tours/request_group_rate");
 });
 
 // 定制404页面

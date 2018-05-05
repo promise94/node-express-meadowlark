@@ -1,0 +1,11 @@
+{
+  "bitwise": true,
+  "eqeqeq": true,
+  "esversion": 6,
+  "undef": true, 
+  "unused": true,
+  "forin": true,
+  "maxerr": 30,
+  "newcap": true,
+  "nomen": true
+}
